@@ -1,0 +1,1 @@
+include sources/app/game/game_T/Makefile.mk
