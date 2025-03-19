@@ -41,7 +41,9 @@
 #include "mw24_timer.h"
 #include "mw24_config.h"
 #include "mw24_debug.h"
+#include "mw24_eeprom.h"
 
+// #include "control_game.h"
 /***********************************************************************************/
 /* Parameters */
 /***********************************************************************************/
@@ -76,11 +78,14 @@ enum mw24_nrf_recv_state_e {
 /***********************************************************************************/
 /* init nRF24l01 */
 extern void mw24_nrf_init();
-
+extern mw24_data_cfg_t slave_data;
 /* action nRF24l01 */
 extern void mw24_tx_nrf_mode_switch();
 extern void mw24_rx_nrf_mode_switch();
 extern void mw24_nrf_send_data_byte(uint8_t* data, uint8_t len);
 extern void mw24_irq_nrf();
 
+/*Game*/
+extern volatile uint8_t opponent_address;
+extern void send_address_to_opponent();
 #endif //__MW24_NWK_H__

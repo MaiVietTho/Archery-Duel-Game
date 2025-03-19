@@ -209,14 +209,6 @@ enum {
 	GAME_ARROW_2_RESET,
 };
 
-/* define METEOROID */
-// enum {
-// 	GAME_METEOROID_SETUP = AR_GAME_DEFINE_SIG,
-// 	GAME_METEOROID_RUN,
-// 	GAME_METEOROID_DETONATOR,
-// 	GAME_METEOROID_RESET,
-// };
-
 /* define signal BANG */
 enum {
 	GAME_BANG_SETUP = AR_GAME_DEFINE_SIG,
@@ -238,6 +230,13 @@ enum {
 	// GAME_LEVEL_UP,
 	GAME_CHECK_GAME_OVER_2,
 	GAME_BORDER_2_RESET,
+};
+
+/* define signal WAITING OPPONENT*/
+enum {
+	WAITING_OPPONENT_CHECK = AR_GAME_DEFINE_SIG,
+	WAITING_OPPONENT_TIME_OUT,
+	WAITING_OPPONENT_EXIT,
 };
 
 /*****************************************************************************/

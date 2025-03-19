@@ -21,15 +21,16 @@ const task_t app_task_table[] = {
 
 	/* ARCHERY GAME */
 	/*************************************************************************/
-	{GAME_ARCHERY_ID			,	TASK_PRI_LEVEL_4	,	game_archery_handle		},
-	{GAME_ARCHERY_2_ID			,	TASK_PRI_LEVEL_4	,	game_archery_2_handle	},
-	{GAME_ARROW_ID				,	TASK_PRI_LEVEL_4	,	game_arrow_handle		},
-	{GAME_ARROW_2_ID			,	TASK_PRI_LEVEL_4	,	game_arrow_2_handle		},
-
-	{GAME_BORDER_ID				,	TASK_PRI_LEVEL_4	, 	game_border_handle		},
-	{GAME_BORDER_2_ID			,	TASK_PRI_LEVEL_4	, 	game_border_2_handle	},
-	{GAME_BANG_ID				,	TASK_PRI_LEVEL_4	,	game_bang_handle		},
-	{GAME_SCREEN_ID				,	TASK_PRI_LEVEL_4	,	scr_archery_game_handle	},
+	{GAME_ARCHERY_ID			,	TASK_PRI_LEVEL_4	,	game_archery_handle			},
+	{GAME_ARCHERY_2_ID			,	TASK_PRI_LEVEL_4	,	game_archery_2_handle		},
+	{GAME_ARROW_ID				,	TASK_PRI_LEVEL_4	,	game_arrow_handle			},
+	{GAME_ARROW_2_ID			,	TASK_PRI_LEVEL_4	,	game_arrow_2_handle			},
+	{GAME_BORDER_ID				,	TASK_PRI_LEVEL_4	, 	game_border_handle			},
+	{GAME_BORDER_2_ID			,	TASK_PRI_LEVEL_4	, 	game_border_2_handle		},
+	{GAME_BANG_ID				,	TASK_PRI_LEVEL_4	,	game_bang_handle			},
+	{GAME_SCREEN_ID				,	TASK_PRI_LEVEL_4	,	scr_archery_game_handle		},
+	{CONTROL_GAME_ID			,	TASK_PRI_LEVEL_4	, 	control_game_handle			},
+	{WAITING_OPPONENT_ID		,	TASK_PRI_LEVEL_4	,	scr_waiting_opponent_handle	},
 
 	/*************************************************************************/
 	/* LINK TASK */

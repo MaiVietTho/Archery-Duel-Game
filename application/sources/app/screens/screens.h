@@ -35,6 +35,10 @@ extern view_dynamic_t dyn_view_item_menu_game;
 extern view_screen_t scr_menu_game;
 extern void scr_menu_game_handle(ak_msg_t* msg);
 
+extern view_dynamic_t dyn_view_item_waiting_opponent;
+extern view_screen_t scr_waiting_opponent;
+extern void scr_waiting_opponent_handle(ak_msg_t* msg); 
+
 /********************************************************** */
 
 // screen startup

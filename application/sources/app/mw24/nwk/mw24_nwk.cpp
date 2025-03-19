@@ -13,8 +13,16 @@
 #include "task_list.h"
 #include "task_list_if.h"
 
+#include "fsm.h"
+#include "port.h"
+#include "message.h"
+#include "timer.h"
+
+#include "sys_ctrl.h"
+
 /* Game */
-#include "scr_check_connect.h"
+#include "scr_waiting_opponent.h"
+#include "control_game.h"
 #include "scr_archery_game.h"
 
 /*************************************************************************************/
@@ -24,6 +32,10 @@
 #define MW24_NRF_SEND_DONE			  ((1 << HAL_NRF_TX_DS))
 #define MW24_NRF_PACKET_RECEIVED	  ((1 << HAL_NRF_RX_DR))
 #define MW24_NRF_ACK_PAYLOAD_RECIEVED ((1 << HAL_NRF_RX_DR) | (1 << HAL_NRF_TX_DS))
+
+/*Game*/
+volatile uint8_t opponent_address;
+data_transmit DATA_TRANSMIT;
 
 /* Mode check wireless */
 uint16_t mw24_check_wireless_msg_couter = 0;
@@ -117,7 +129,7 @@ void mw24_send_data_to_rf24_tx(uint8_t data) {
 		mw24_timer_enable();
 	}
 
-	/* Clear data Tx */
+	// /* Clear data Tx */
 	hal_nrf_flush_tx();
 
 	/* Send data rf24*/
@@ -125,6 +137,7 @@ void mw24_send_data_to_rf24_tx(uint8_t data) {
 
 	/* update status rf24 */
 	mw24_set_nrf_send_state(MW24_NRF_SEND_STATE_SENDING);
+
 
 	MW24_DEBUG_TX_OFF();
 }
@@ -162,8 +175,10 @@ void mw24_irq_nrf() {
 	}
 
 	uint8_t nrf24_irq_mask = hal_nrf_get_clear_irq_flags();
+
 	MW24_DEBUG_FLAGS("RF24_flags: [%d]", nrf24_irq_mask);
-	
+
+	// uint8_t slave_address = mw24_get_number_address_nrf();
 	switch (nrf24_irq_mask) {
 	case MW24_NRF_MAX_RETRANMIT: {
 		MW24_DEBUG_STATUS("RF24_state_send: max retranmit\n");
@@ -193,48 +208,124 @@ void mw24_irq_nrf() {
 		if (!hal_nrf_rx_fifo_empty()) {
 			/* Receive data */
 			uint8_t pl_len;
-			volatile uint8_t k;
-			pl_len = hal_nrf_read_rx_pload((uint8_t*)&k);
+			volatile uint8_t data;
+			pl_len = hal_nrf_read_rx_pload((uint8_t*)&data);
+			// xprintf("%d\n", k);
 
 			if (pl_len != MW24_FRAME_DATA_RF24_PAYLOAD_LEN) {
 				FATAL("RF24", 0x05);
 			}
 
-			switch (k)
+			switch (data)
 			{
-			case 0: {
-				if(GAME_STATE != GAME_OFF) {
-					APP_DBG_SIG("SLAVE RECEIVE ARCHERY DOWN\n");
-					task_post_pure_msg(GAME_ARCHERY_2_ID, GAME_ARCHERY_2_DOWN);
-				}
-				else {
-					task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTTON_DOWN_RELEASED);
-				}
+			case RESET_ADDRESS_OPPONENT: {
+				APP_DBG("RESET ADRESS OPPONENT\n");
+				opponent_address = 0;
+			}
+				break;		
+
+			case OPPONENT_ADDRESS_1: {
+				APP_DBG("RECEIVED OPPONENT ADDRESS 1\n");
+				opponent_address = 1;
 			}
 				break;
 
-			case 1: {
-				if (GAME_STATE != GAME_OFF) {
-					APP_DBG_SIG("SLAVE RECEIVE ARCHERY UP\n");
-					task_post_pure_msg(GAME_ARCHERY_2_ID, GAME_ARCHERY_2_UP);
-				}
-				else {
-					task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTTON_UP_RELEASED);
-				}
+			case OPPONENT_ADDRESS_2: {
+				APP_DBG("RECEIVED OPPONENT ADDRESS 2\n");
+				opponent_address = 2;
 			}
 				break;
 
-			case 2: {
-				if (GAME_STATE != GAME_OFF) {
-					APP_DBG_SIG("SLAVE RECEIVE ARROW SHOOT\n");
-					task_post_pure_msg(GAME_ARROW_2_ID, GAME_ARROW_2_SHOOT);
-				}
-				else {
-					task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTTON_MODE_RELEASED);
-				}
+			case OPPONENT_ADDRESS_3: {
+				APP_DBG("RECEIVED OPPONENT ADDRESS 3\n");
+				opponent_address = 3;
+			}
+				break;
+
+			case OPPONENT_ADDRESS_4: {
+				APP_DBG("RECEIVED OPPONENT ADDRESS 4\n");
+				opponent_address = 4;
+			}
+				break;
+
+			case OPPONENT_ADDRESS_5: {
+				APP_DBG("RECEIVED OPPONENT ADDRESS 5\n");
+				opponent_address = 5;
 			}
 				break;
 				
+			case BUTTON_DOWN_MASTER: {
+				if(GAME_STATE != GAME_OFF) {
+					APP_DBG("SLAVE RECEIVED BUTTON DOWN MASTER\n");
+					task_post_pure_msg(GAME_ARCHERY_2_ID, GAME_ARCHERY_2_DOWN);
+				}
+			}
+				break;
+
+			case BUTTON_UP_MASTER: {
+				if (GAME_STATE != GAME_OFF) {
+					APP_DBG("SLAVE RECEIVED BUTTON UP MASTER\n");
+					task_post_pure_msg(GAME_ARCHERY_2_ID, GAME_ARCHERY_2_UP);
+				}
+			}
+				break;
+
+			case BUTTON_MODE_MASTER: {
+				if (GAME_STATE != GAME_OFF) {
+					APP_DBG("SLAVE RECEIVED BUTTON MODE MASTER\n");
+					task_post_pure_msg(GAME_ARROW_2_ID, GAME_ARROW_2_SHOOT);
+				}
+			}
+				break;
+
+			case BUTTON_DOWN_SLAVE: {
+				if(GAME_STATE != GAME_OFF) {
+					APP_DBG("MASTER RECEIVED BUTTON DOWN SLAVE\n");
+					task_post_pure_msg(GAME_ARCHERY_ID, GAME_ARCHERY_DOWN);
+				}			
+			}
+				break;
+
+			case BUTTON_UP_SLAVE: {
+				if (GAME_STATE != GAME_OFF) {
+					APP_DBG("MASTER RECEIVED BUTTON UP SLAVE\n");
+					task_post_pure_msg(GAME_ARCHERY_ID, GAME_ARCHERY_UP);
+				}			
+			}
+				break;
+
+			case BUTTON_MODE_SLAVE: {
+				if (GAME_STATE != GAME_OFF) {
+					APP_DBG("MASTER RECEIVED BUTTON MODE SLAVE\n");
+					task_post_pure_msg(GAME_ARROW_ID, GAME_ARROW_SHOOT);
+				}			
+			}
+				break;
+
+			case MASTER_JOINED_GAME: {
+				APP_DBG("MASTER JOINED GAME\n");
+				master_joined_game = true;
+			}
+				break;
+
+			case MASTER_OUT_GAME: {
+				APP_DBG("MASTER OUT GAME\n");
+				master_joined_game = false;
+			}
+				break;
+
+			case SLAVE_JOINED_GAME: {
+				APP_DBG("SLAVE JOINED GAME\n");
+				slave_joined_game = true; 
+			}
+				break;
+
+			case SLAVE_OUT_GAME: {
+				APP_DBG("SLAVE OUT GAME\n");
+				slave_joined_game = false;
+			}
+				break;
+
 			default:
 				break;
 			}
@@ -242,6 +333,22 @@ void mw24_irq_nrf() {
 
 			/* Clear data rx*/
 			hal_nrf_flush_rx();
+
+			// MW24_DEBUG_RX_ON();
+
+			/* Transformation mode rs485 -> Tx */
+			// mw24_tx_rs485_uart2_enable();
+			// if (mw24_get_nrf_recv_state() == MW24_NRF_RECV_STATE_IDLE) {
+			// 	mw24_timer_reset();
+			// 	mw24_io_rs485_dir_high();
+			// 	mw24_timer_enable();
+			// 	mw24_set_nrf_recv_state(MW24_NRF_RECV_STATE_RECEIVING);
+			// }
+			
+			// mw24_timer_reset();
+			// USART_SendData(USART2, k);
+
+			// MW24_DEBUG_RX_OFF();
 		}
 		break;
 
@@ -337,3 +444,9 @@ void mw24_set_nrf_recv_state(uint8_t state) {
 	mw24_nrf_recv_state = state;
 	MW24_DEBUG_STATUS("RF24_state_recv: [%d]\n", state);
 }
+
+void send_address_to_opponent() {
+	uint8_t device_address = mw24_get_number_address_nrf();
+	mw24_send_data_to_rf24_tx(device_address);
+}
+

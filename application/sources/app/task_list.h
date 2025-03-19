@@ -36,6 +36,8 @@ enum {
 
 	GAME_BANG_ID,
 	GAME_SCREEN_ID,
+	CONTROL_GAME_ID,
+	WAITING_OPPONENT_ID,
 
 	/* LINK */
 #if defined (IF_LINK_UART_EN)
@@ -88,7 +90,9 @@ extern void game_arrow_2_handle(ak_msg_t* msg);
 extern void game_meteoroid_handle(ak_msg_t* msg);
 extern void game_border_handle(ak_msg_t* msg);
 extern void game_border_2_handle(ak_msg_t* msg);
-extern void game_bang_handle(ak_msg_t* msg); 
+extern void game_bang_handle(ak_msg_t* msg);
+extern void control_game_handle(ak_msg_t* msg);  
+extern void scr_waiting_opponent_handle(ak_msg_t* msg); 
 
 /*****************************************************************************/
 /*  DECLARE: Task polling

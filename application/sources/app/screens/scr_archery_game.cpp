@@ -176,11 +176,36 @@ void view_scr_archery_game(){
         game_border_2_display();
     }
     else if (GAME_STATE == GAME_OVER){
-        view_render.clear();
-        view_render.setTextSize(2);
-        view_render.setTextColor(WHITE);
-        view_render.setCursor(17, 24);
-        view_render.print("GAME OVER");
+        if (mw24_i_am_master) {
+            if (person_left_win) {
+                view_render.clear();
+                view_render.setTextSize(2);
+                view_render.setTextColor(WHITE);
+                view_render.setCursor(45, 24);
+                view_render.print("LOSE");
+            } else {
+                view_render.clear();
+                view_render.setTextSize(2);
+                view_render.setTextColor(WHITE);
+                view_render.setCursor(40, 24);
+                view_render.print("WINER");
+            }
+        }
+        else {
+            if (person_left_win) {
+                view_render.clear();
+                view_render.setTextSize(2);
+                view_render.setTextColor(WHITE);
+                view_render.setCursor(40, 24);
+                view_render.print("WINER");
+            } else {
+                view_render.clear();
+                view_render.setTextSize(2);
+                view_render.setTextColor(WHITE);
+                view_render.setCursor(45, 24);
+                view_render.print("LOSE");
+            }
+        }
     }
 }
 
@@ -249,7 +274,9 @@ void scr_archery_game_handle(ak_msg_t* msg) {
 
     case GAME_EXIT_GAME: {
         APP_DBG_SIG("GAME_EXIT_GAME\n");
-        
+        master_joined_game = false;
+        slave_joined_game = false;   
+        opponent_address = 0;     
         GAME_STATE = GAME_OFF;
 
         SCREEN_TRAN(scr_game_over_handle, &scr_game_over);

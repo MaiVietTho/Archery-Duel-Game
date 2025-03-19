@@ -168,7 +168,7 @@ void screen_tran_menu_game() {
     switch (screen_menu_game.location)
     {
     case 0:  // item 1
-        SCREEN_TRAN(scr_archery_game_handle, &scr_archery_game);
+        SCREEN_TRAN(scr_waiting_opponent_handle, &scr_waiting_opponent);
         break;
 
     case 1: // item 2
@@ -197,6 +197,7 @@ void scr_menu_game_handle(ak_msg_t* msg) {
     
     case AC_DISPLAY_BUTTON_MODE_RELEASED: {
         APP_DBG_SIG("AC_DISPLAY_BUTTON_MODE_RELEASED\n");
+        send_address_to_opponent();
         screen_tran_menu_game();
     }
         break;

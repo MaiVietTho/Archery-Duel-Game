@@ -37,10 +37,6 @@ void view_scr_game_over() {
     else {
         view_render.print("Person right");
     }
-
-    // Icon
-	view_render.drawBitmap(10, 	48,	icon_restart,	15,	15,	WHITE);
-	// view_render.drawBitmap(55, 	50,	icon_charts,	17,	15,	WHITE);
 	view_render.drawBitmap(100,	48,	icon_go_home,	16,	16,	WHITE);
 }
 
@@ -87,26 +83,6 @@ void scr_game_over_handle(ak_msg_t* msg) {
                        sizeof(game_score_eeprom));
 
         SCREEN_TRAN(scr_menu_game_handle, &scr_menu_game);
-    }
-        BUZZER_PlayTones(tones_cc);
-        break;
-
-    // case AC_DISPLAY_BUTTON_UP_RELEASED: {
-    //     APP_DBG_SIG("AC_DISPLAY_BUTON_UP_RELEASED\n");
-    //     eeprom_write(  EEPROM_SCORE_START_ADDR,
-    //                    (uint8_t*)&game_score_eeprom,
-    //                    sizeof(game_score_eeprom));
-    //     SCREEN_TRAN(scr_charts_game_handle, &scr_charts_game);
-    // }
-    //     BUZZER_PlayTones(tones_cc);
-    //     break;
-        
-    case AC_DISPLAY_BUTTON_DOWN_RELEASED: {
-        APP_DBG_SIG("AC_DISPLAY_BUTON_DOWN_RELEASED\n");
-        eeprom_write(  EEPROM_SCORE_START_ADDR,
-                       (uint8_t*)&game_score_eeprom,
-                       sizeof(game_score_eeprom));
-        SCREEN_TRAN(scr_archery_game_handle, &scr_archery_game);
     }
         BUZZER_PlayTones(tones_cc);
         break;

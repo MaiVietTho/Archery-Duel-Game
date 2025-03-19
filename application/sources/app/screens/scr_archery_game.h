@@ -31,6 +31,7 @@
 #include "game_border.h"
 #include "game_border_person_2.h"
 #include "scr_check_connect.h"
+#include "scr_waiting_opponent.h"
 
 enum game_state {
     GAME_OFF,

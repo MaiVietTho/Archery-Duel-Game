@@ -76,7 +76,7 @@ void hal_nrf_disable_dynamic_pl(void);
 * The input parameter contains is a byte where the bit values tells weather the
 *  pipe uses the ack payload feature or not. For example if bit 0 is set then 
 * Pipe 0 uses ack payload,
- * @param setup Byte value with bit set for pipes that uses the dynamic payload feature
+ * @c
  */
 void hal_nrf_setup_dyn_pl(uint8_t setup);
 
@@ -158,7 +158,7 @@ void hal_nrf_set_address(hal_nrf_address_t address, uint8_t *addr);
  * parameters.
  *
  * @param retr Number of retransmit, 0 equ retransmit OFF
- * @param delay Retransmit delay in µs
+ * @param delay Retransmit delay in ï¿½s
 */
 void hal_nrf_set_auto_retr(uint8_t retr, uint16_t delay);
 

@@ -34,10 +34,17 @@ void btn_mode_callback(void* b) {
 	case BUTTON_SW_STATE_RELEASED: {
 		APP_DBG("[btn_mode_callback] BUTTON_SW_STATE_RELEASED\n");
 		if (GAME_STATE != GAME_OFF) {
-			task_post_pure_msg(GAME_ARROW_ID, GAME_ARROW_SHOOT);
+			if (mw24_i_am_master == false) {
+				task_post_pure_msg(CONTROL_GAME_ID, AC_DISPLAY_BUTTON_MODE_RELEASED);
+				task_post_pure_msg(GAME_ARROW_ID, GAME_ARROW_SHOOT);
+			}
+			else {
+				task_post_pure_msg(CONTROL_GAME_ID, AC_DISPLAY_BUTTON_MODE_RELEASED);
+				task_post_pure_msg(GAME_ARROW_2_ID, GAME_ARROW_2_SHOOT);
+			}
 		}
 		else {
-			task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTTON_MODE_RELEASED);			
+			task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTTON_MODE_RELEASED);	
 		}
 	}
 		break;
@@ -64,7 +71,14 @@ void btn_up_callback(void* b) {
 	case BUTTON_SW_STATE_RELEASED: {
 		APP_DBG("[btn_up_callback] BUTTON_SW_STATE_RELEASED\n");
 		if (GAME_STATE != GAME_OFF) {
-			task_post_pure_msg(GAME_ARCHERY_ID, GAME_ARCHERY_UP);
+			if (mw24_i_am_master == false) {
+				task_post_pure_msg(CONTROL_GAME_ID, AC_DISPLAY_BUTTON_UP_RELEASED);
+				task_post_pure_msg(GAME_ARCHERY_ID, GAME_ARCHERY_UP);
+			}
+			else {
+				task_post_pure_msg(CONTROL_GAME_ID, AC_DISPLAY_BUTTON_UP_RELEASED);
+				task_post_pure_msg(GAME_ARCHERY_2_ID, GAME_ARCHERY_2_UP);
+			}
 		}
 		else {
 			task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTTON_UP_RELEASED);
@@ -94,7 +108,14 @@ void btn_down_callback(void* b) {
 	case BUTTON_SW_STATE_RELEASED: {
 		APP_DBG("[btn_down_callback] BUTTON_SW_STATE_RELEASED\n");
 		if (GAME_STATE != GAME_OFF) {
-			task_post_pure_msg(GAME_ARCHERY_ID, GAME_ARCHERY_DOWN);
+			if (mw24_i_am_master == false) {
+				task_post_pure_msg(CONTROL_GAME_ID, AC_DISPLAY_BUTTON_DOWN_RELEASED);
+				task_post_pure_msg(GAME_ARCHERY_ID, GAME_ARCHERY_DOWN);
+			}
+			else {
+				task_post_pure_msg(CONTROL_GAME_ID, AC_DISPLAY_BUTTON_DOWN_RELEASED);
+				task_post_pure_msg(GAME_ARCHERY_2_ID, GAME_ARCHERY_2_DOWN);
+			}
 		}
 		else {
 			task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTTON_DOWN_RELEASED);

@@ -15,6 +15,7 @@ SOURCES_CPP += sources/app/screens/scr_charts_game.cpp
 SOURCES_CPP += sources/app/screens/scr_game_over.cpp
 SOURCES_CPP += sources/app/screens/scr_game_setting.cpp
 SOURCES_CPP += sources/app/screens/scr_menu_game.cpp
+SOURCES_CPP += sources/app/screens/scr_waiting_opponent.cpp
 
 # CPP soure file data bitmap
 SOURCES_CPP += sources/app/screens/screens_bitmap.cpp

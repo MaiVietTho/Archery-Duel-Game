@@ -17,7 +17,7 @@
 /* Variable and Struct Declaration - Check Connect */
 /*****************************************************************************/
 
-button_transmit BUTTON_TRANSMIT; 
+// button_transmit BUTTON_TRANSMIT; 
 
 struct scr_check_connect_parameter_t {
 	uint8_t address_check;
@@ -202,42 +202,42 @@ void scr_check_connect_handle(ak_msg_t* msg) {
 	case AC_DISPLAY_BUTTON_MODE_RELEASED: {
 		APP_DBG_SIG("AC_DISPLAY_BUTTON_MODE_RELEASED\n");
 
-		BUTTON_TRANSMIT = BUTTON_MODE_MASTER;
+		// BUTTON_TRANSMIT = BUTTON_MODE_MASTER;
 
-		if (mw24_i_am_master) {
-				mw24_tx_nrf_mode_switch();
-				hal_nrf_flush_tx();
-				mw24_nrf_send_data_byte((uint8_t*)&BUTTON_TRANSMIT, sizeof(BUTTON_TRANSMIT));
-				// set_check_connect_status(mw24_check_wireless_msg_couter);
-			}
+		// if (mw24_i_am_master) {
+		// 		mw24_tx_nrf_mode_switch();
+		// 		hal_nrf_flush_tx();
+		// 		mw24_nrf_send_data_byte((uint8_t*)&BUTTON_TRANSMIT, sizeof(BUTTON_TRANSMIT));
+		// 		// set_check_connect_status(mw24_check_wireless_msg_couter);
+		// 	}
 	}
 		break;
 
 	case AC_DISPLAY_BUTTON_UP_RELEASED: {
 		APP_DBG_SIG("AC_DISPLAY_BUTTON_MODE_RELEASED\n");
 
-		BUTTON_TRANSMIT = BUTTON_UP_MASTER;
+		// BUTTON_TRANSMIT = BUTTON_UP_MASTER;
 
-		if (mw24_i_am_master) {
-				mw24_tx_nrf_mode_switch();
-				hal_nrf_flush_tx();
-				mw24_nrf_send_data_byte((uint8_t*)&BUTTON_TRANSMIT, sizeof(BUTTON_TRANSMIT));
-				// set_check_connect_status(mw24_check_wireless_msg_couter);
-			}
+		// if (mw24_i_am_master) {
+		// 		mw24_tx_nrf_mode_switch();
+		// 		hal_nrf_flush_tx();
+		// 		mw24_nrf_send_data_byte((uint8_t*)&BUTTON_TRANSMIT, sizeof(BUTTON_TRANSMIT));
+		// 		// set_check_connect_status(mw24_check_wireless_msg_couter);
+		// 	}
 	}
 		break;
 
 	case AC_DISPLAY_BUTTON_DOWN_RELEASED: {
 		APP_DBG_SIG("AC_DISPLAY_BUTTON_DOWN_RELEASED");
 
-		BUTTON_TRANSMIT = BUTTON_DOWN_MASTER;
+		// BUTTON_TRANSMIT = BUTTON_DOWN_MASTER;
 
-		if (mw24_i_am_master) {
-				mw24_tx_nrf_mode_switch();
-				hal_nrf_flush_tx();
-				mw24_nrf_send_data_byte((uint8_t*)&BUTTON_TRANSMIT, sizeof(BUTTON_TRANSMIT));
-				// set_check_connect_status(mw24_check_wireless_msg_couter);
-			}
+		// if (mw24_i_am_master) {
+		// 		mw24_tx_nrf_mode_switch();
+		// 		hal_nrf_flush_tx();
+		// 		mw24_nrf_send_data_byte((uint8_t*)&BUTTON_TRANSMIT, sizeof(BUTTON_TRANSMIT));
+		// 		// set_check_connect_status(mw24_check_wireless_msg_couter);
+		// 	}
 	}
 		break;
 
